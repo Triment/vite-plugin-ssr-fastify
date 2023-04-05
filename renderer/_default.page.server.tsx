@@ -11,7 +11,7 @@ export const passToClient = ['pageProps', 'urlPathname']
 
 async function render(pageContext: PageContextServer) {
   const { Page, pageProps } = pageContext
-  const pageHtml = ReactDOMServer.renderToString(
+  const pageHtml = ReactDOMServer.renderToStaticNodeStream(
     <PageShell pageContext={pageContext}>
       <Page {...pageProps} />
     </PageShell>
@@ -32,7 +32,7 @@ async function render(pageContext: PageContextServer) {
         <title>${title}</title>
       </head>
       <body>
-        <div id="page-view">${dangerouslySkipEscape(pageHtml)}</div>
+        <div id="page-view">${pageHtml}</div>
       </body>
     </html>`
 
