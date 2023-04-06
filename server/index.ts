@@ -40,9 +40,9 @@ async function startServer() {
     if (!httpResponse) {
       return reply.code(404).type('text/html').send('Not Found')
     }
-    const { statusCode, contentType } = httpResponse
     httpResponse.pipe(reply.raw)
     return reply
+    //const { statusCode, contentType } = httpResponse
     //return reply.status(statusCode).type(contentType).send(await httpResponse.getNodeStream())
   })
 
