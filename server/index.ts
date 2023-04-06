@@ -41,7 +41,9 @@ async function startServer() {
       return reply.code(404).type('text/html').send('Not Found')
     }
     const { statusCode, contentType } = httpResponse
-    return reply.status(statusCode).type(contentType).send(await httpResponse.getNodeStream())
+    httpResponse.pipe(reply.raw)
+    return reply
+    //return reply.status(statusCode).type(contentType).send(await httpResponse.getNodeStream())
   })
 
   const port: number = process.env.PORT ? +process.env.PORT : 3000
