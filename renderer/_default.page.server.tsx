@@ -7,10 +7,10 @@ import type { PageContextServer } from './types'
 
 export { render }
 // See https://vite-plugin-ssr.com/data-fetching
-export const passToClient = ['pageProps', 'urlPathname']
+export const passToClient = ['pageProps', 'urlPathname', 'userState']
 
 async function render(pageContext: PageContextServer) {
-  const { Page, pageProps } = pageContext
+  const { Page, pageProps, userState } = pageContext
   const pageHtml = ReactDOMServer.renderToStaticNodeStream(
     <PageShell pageContext={pageContext}>
       <Page {...pageProps} />
@@ -39,6 +39,7 @@ async function render(pageContext: PageContextServer) {
   return {
     documentHtml,
     pageContext: {
+      userState
       // We can add some `pageContext` here, which is useful if we want to do page redirection https://vite-plugin-ssr.com/page-redirection
     }
   }

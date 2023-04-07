@@ -22,7 +22,7 @@ export type PageContextCustom = {
   }
 }
 
-type PageContextServer = PageContextBuiltIn<Page> & PageContextCustom
-type PageContextClient = PageContextBuiltInClient<Page> & PageContextCustom
+type PageContextServer = PageContextBuiltIn<Page> & PageContextCustom & { userState: {[key:string]:any}}
+type PageContextClient = PageContextBuiltInClient<Page> & PageContextCustom & { userState: {[key:string]:any}}
 
 type PageContext = PageContextClient | PageContextServer

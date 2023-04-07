@@ -14,7 +14,7 @@ function PageShell({ children, pageContext }: { children: React.ReactNode; pageC
         <Layout>
           <Sidebar>
             <Logo />
-            <Link className="navitem" href="/">
+            <Link className="navitem text-blue" href="/">
               Home
             </Link>
             <Link className="navitem" href="/about">
@@ -31,11 +31,7 @@ function PageShell({ children, pageContext }: { children: React.ReactNode; pageC
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div
-      style={{
-        display: 'flex',
-        maxWidth: 900,
-        margin: 'auto'
-      }}
+      className=' flex shadow-md bg-gray-700'
     >
       {children}
     </div>
