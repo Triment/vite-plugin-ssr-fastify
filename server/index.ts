@@ -51,7 +51,7 @@ async function startServer() {
     //return reply.status(statusCode).type(contentType).send(await httpResponse.getNodeStream())
   })
 
-  const port: number = process.env.PORT ? +process.env.PORT : 3000
+  const port: number = process.env.PORT ? +process.env.PORT : 4000
 
   app.listen({ port })
 

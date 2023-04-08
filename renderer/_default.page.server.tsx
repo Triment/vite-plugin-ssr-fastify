@@ -1,10 +1,10 @@
 import ReactDOMServer from 'react-dom/server'
 import React from 'react'
 import { PageShell } from './PageShell'
-import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr'
-import logoUrl from './logo.svg'
+import { escapeInject } from 'vite-plugin-ssr'
+import { RecoilRoot } from 'recoil'
 import type { PageContextServer } from './types'
-
+const logoUrl = ''
 export { render }
 // See https://vite-plugin-ssr.com/data-fetching
 export const passToClient = ['pageProps', 'urlPathname', 'userState']
@@ -13,7 +13,9 @@ async function render(pageContext: PageContextServer) {
   const { Page, pageProps, userState } = pageContext
   const pageHtml = ReactDOMServer.renderToStaticNodeStream(
     <PageShell pageContext={pageContext}>
-      <Page {...pageProps} />
+      <RecoilRoot>
+        <Page {...pageProps} />
+      </RecoilRoot>
     </PageShell>
   )
 

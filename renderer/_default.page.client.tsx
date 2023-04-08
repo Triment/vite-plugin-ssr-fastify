@@ -1,8 +1,9 @@
-import "virtual:windi.css"
+import 'virtual:windi.css'
 import React from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { PageShell } from './PageShell'
 import type { PageContextClient } from './types'
+import { RecoilRoot } from 'recoil'
 
 export { render }
 
@@ -11,7 +12,9 @@ async function render(pageContext: PageContextClient) {
   hydrateRoot(
     document.getElementById('page-view')!,
     <PageShell pageContext={pageContext}>
-      <Page {...pageProps} />
+      <RecoilRoot>
+        <Page {...pageProps} />
+      </RecoilRoot>
     </PageShell>
   )
 }

@@ -1,8 +1,8 @@
-import { atom } from "recoil"
+import { atom } from 'recoil'
 
 export const user = atom({
-    key: 'atom-user',
-    default: {
-
-    }
+  key: 'atom-user',
+  default: {
+    username: ''
+  }
 })

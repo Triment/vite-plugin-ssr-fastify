@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react'
-import ssr from 'vite-plugin-ssr/plugin'
-import WindiCSS from "vite-plugin-windicss";
 import { UserConfig } from 'vite'
+import ssr from 'vite-plugin-ssr/plugin'
+import WindiCSS from 'vite-plugin-windicss'
 
 const config: UserConfig = {
   resolve: {
@@ -12,9 +12,9 @@ const config: UserConfig = {
   plugins: [react(), ssr(), WindiCSS({
     scan: {
       // 默认情况下只有 `src/` 目录下被扫描
-      dirs: ["pages", "renderer"],
+      dirs: ['pages', 'renderer'],
       // 我们只需要指定实际使用的文件扩展名
-      fileExtensions: ["vue", "js", "ts", "jsx", "tsx"],
+      fileExtensions: ['vue', 'js', 'ts', 'jsx', 'tsx'],
     },
   }),]
 }
