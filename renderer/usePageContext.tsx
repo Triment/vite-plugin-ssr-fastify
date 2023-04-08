@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // `usePageContext` allows us to access `pageContext` in any React component.
 // See https://vite-plugin-ssr.com/pageContext-anywhere
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'virtual:windi.css'
 import React from 'react'
 import { hydrateRoot } from 'react-dom/client'
@@ -8,7 +9,7 @@ import { RecoilRoot } from 'recoil'
 export { render }
 
 async function render(pageContext: PageContextClient) {
-  const { Page, pageProps, userState } = pageContext
+  const { Page, pageProps } = pageContext
   hydrateRoot(
     document.getElementById('page-view')!,
     <PageShell pageContext={pageContext}>
