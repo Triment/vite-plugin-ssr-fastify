@@ -12,9 +12,7 @@ function Page() {
       This page is:
       <ul>
         <li role='author'>{state.username}</li>
-        <li role="increse" onClick={()=>changeState({ username: state.username+ 'hello '})}>
-          increse 
-        </li>
+        <p className=' switch hover:text-white p-3 bg-gray-500 hover:bg-blue-500'>h</p>
       </ul>
     </>
   )

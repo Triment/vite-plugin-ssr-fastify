@@ -16,7 +16,7 @@ interface ModalProps {
 
 
 export const useModal = (): [Modal: (props: ModalProps) => JSX.Element, showModal: boolean, toggle: () => void] => {
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState<boolean>(false)
 
   const toggle = () => setShowModal(!showModal)
 
@@ -26,6 +26,7 @@ export const useModal = (): [Modal: (props: ModalProps) => JSX.Element, showModa
       {showModal ? (
         <>
           <div
+            role='modal'
             className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'
           >
             <div className='relative w-auto my-6 mx-auto max-w-3xl'>
