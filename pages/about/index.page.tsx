@@ -1,12 +1,20 @@
-import React from 'react'
+import React  from 'react'
 import './code.css'
+import { user } from '#root/renderer/recoil/atoms/user'
+import { useRecoilState } from 'recoil'
 
 export { Page }
 
+export const meta = {
+  title: 'title',
+  description: 'desc'
+}
+
 function Page() {
+  const [state, ] = useRecoilState(user)
   return (
     <>
-      <h1>About</h1>
+      <h1>{state.username}</h1>
       <p>
         Demo using <code>vite-plugin-ssr</code>.
       </p>

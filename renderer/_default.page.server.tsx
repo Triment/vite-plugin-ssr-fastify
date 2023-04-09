@@ -11,13 +11,13 @@ export const passToClient = ['pageProps', 'urlPathname', 'userState']
 
 async function render(pageContext: PageContextServer) {
   const { Page, pageProps, userState } = pageContext
-  const pageHtml = ReactDOMServer.renderToStaticNodeStream(
+  const pageHtml = Page !== undefined ? ReactDOMServer.renderToStaticNodeStream(
     <PageShell pageContext={pageContext}>
-      <RecoilRoot>
+      <RecoilRoot >
         <Page {...pageProps} />
       </RecoilRoot>
     </PageShell>
-  )
+  ): ''
 
   // See https://vite-plugin-ssr.com/head
   const { documentProps } = pageContext.exports
@@ -34,7 +34,8 @@ async function render(pageContext: PageContextServer) {
         <title>${title}</title>
       </head>
       <body>
-        <div id="page-view">${pageHtml}</div>
+        // eslint-disable-next-line no-extra-boolean-cast
+        <div id="page-view">${ pageHtml }</div>
       </body>
     </html>`
 

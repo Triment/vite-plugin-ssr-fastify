@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
-import { Page } from './index/index.page'
+import { Page } from './index.page'
 /**
  * @jest-environment jsdom
  */
@@ -20,11 +20,11 @@ test('测试recoil状态变化', async () => {
     <Page />
   </RecoilRoot>)
   // ACT
-  await userEvent.click(screen.getByText('increse'))
+  await userEvent.click(screen.getByRole('changeuser'))
   //await screen.findByRole('hello')
 
   // ASSERT
   expect(onChange).toHaveBeenCalledTimes(2)
   //expect(screen.findByRole('author')).toHaveTextContent('hello')
-  expect(screen.getByRole('author')).toHaveTextContent('hello')
+  expect(screen.getByRole('author')).toHaveTextContent('newuser')
 })
