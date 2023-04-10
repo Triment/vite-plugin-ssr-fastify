@@ -9,7 +9,7 @@ export const QlClient = ({ initialState, headers  }: { initialState?: object, he
   url: globalConfig.GRAPHQL_PATH,
   headers,
   cache: memCache({ initialState }),
-  fetch: typeof window !== 'undefined' ? window.fetch : fetch,
+  fetch: typeof window === 'undefined' ? fetch : window.fetch.bind(window),
   subscriptionClient: createClient({
     url: globalConfig.GRAPHQL_WS_PATH,
     webSocketImpl: WebSocket

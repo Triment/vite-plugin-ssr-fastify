@@ -6,9 +6,10 @@ import React from 'react'
 export function Page(){
 
   useSubscription({ 
-    query: `subscription mysub {
-            greetings
-          }`
+    query: `
+    subscription MySubscription {
+      greetings
+    }`
   }, ({ data }) => {
     console.log(data)
   })

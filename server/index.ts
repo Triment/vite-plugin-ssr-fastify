@@ -11,6 +11,8 @@ import path from 'path'
 import vite from 'vite'
 import { renderPage } from 'vite-plugin-ssr'
 import { schema } from './Yoga/Schema/index'
+import { WebSocket, WebSocketServer } from 'ws'
+import { yogaApp } from './Yoga/yogaServer'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const root = `${__dirname}/..`
@@ -22,10 +24,66 @@ async function startServer() {
 
   app.register(fastifyWebsocket)
 
-  app.register(async (fastify) => {
-    fastify.get(globalConfig.GRAPHQL_PATH, { websocket: true }, makeHandler({ schema }))
-  })
+  // app.register(async (fastify) => {
+  //   fastify.get(globalConfig.GRAPHQL_PATH, { websocket: true }, makeHandler({ schema }))
+  // })
+  app.route({
+    url: '/graphql',
+    method: ['GET', 'POST', 'OPTIONS'],
+    config: { websocket: true },
+    handler: async (req, reply) => {
+      // Second parameter adds Fastify's `req` and `reply` to the GraphQL Context
+      const response = await yogaApp.handleNodeRequest(req, {
+        req,
+        reply
+      })
+      response.headers.forEach((value, key) => {
+        reply.header(key, value)
+      })
 
+      reply.status(response.status)
+
+      reply.send(response.body)
+
+      return reply
+    }
+  })
+  const wsServer = new WebSocketServer({
+    server: app.server,
+    path: globalConfig.GRAPHQL_WS_PATH
+  })
+  useServer(
+    {
+      execute: (args: any) => args.rootValue.execute(args),
+      subscribe: (args: any) => args.rootValue.subscribe(args),
+      onSubscribe: async (ctx, msg) => {
+        const { schema, execute, subscribe, contextFactory, parse, validate } =
+          yogaApp.getEnveloped({
+            ...ctx,
+            req: ctx.extra.request,
+            socket: ctx.extra.socket,
+            params: msg.payload
+          })
+
+        const args = {
+          schema,
+          operationName: msg.payload.operationName,
+          document: parse(msg.payload.query),
+          variableValues: msg.payload.variables,
+          contextValue: await contextFactory(),
+          rootValue: {
+            execute,
+            subscribe
+          }
+        }
+
+        const errors = validate(args.schema, args.document)
+        if (errors.length) return errors
+        return args
+      }
+    },
+    wsServer
+  )
   await app.register(middie)
   await app.register(compress)
 
@@ -45,7 +103,7 @@ async function startServer() {
 
   app.get('*', async (req, reply) => {
     //graphql client
-    const client = QlClient({ headers: { 'x-c': '8989' }})
+    const client = QlClient({ headers: { 'x-c': '8989' } })
     const userState = {
       id: 1
     }
