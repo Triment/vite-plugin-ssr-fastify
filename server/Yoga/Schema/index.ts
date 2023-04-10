@@ -27,6 +27,9 @@ export const schema = createSchema({
       greetings: {
         async *subscribe() {
           for (const hi of ['Hi', 'Bonjour', 'Hola', 'Ciao', 'Zdravo']) {
+            await ((new Promise((resolve)=>setTimeout(() => {
+                resolve(1)
+            }, 2000))))
             yield { greetings: hi }
           }
         },

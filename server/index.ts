@@ -6,10 +6,11 @@ import fastifyStatic from '@fastify/static'
 import fastifyWebsocket from '@fastify/websocket'
 import fastify from 'fastify'
 import { makeHandler } from 'graphql-ws/lib/use/@fastify/websocket'
+import { useServer } from 'graphql-ws/lib/use/ws'
 import path from 'path'
 import vite from 'vite'
 import { renderPage } from 'vite-plugin-ssr'
-import { schema } from './yoga'
+import { schema } from './Yoga/Schema/index'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const root = `${__dirname}/..`
@@ -44,7 +45,7 @@ async function startServer() {
 
   app.get('*', async (req, reply) => {
     //graphql client
-    const client = QlClient({})
+    const client = QlClient({ headers: { 'x-c': '8989' }})
     const userState = {
       id: 1
     }
