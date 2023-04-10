@@ -9,7 +9,12 @@
     "server:prod": "npm run build && cross-env NODE_ENV=production ts-node ./server",
     "test": "jest",
     "check": "eslint . --ext .tsx,.ts",
-    "fix": "eslint . --ext .tsx,.ts --fix"
+    "fix": "eslint . --ext .tsx,.ts --fix",
+    "prisma-f": " prisma format",
+    "prisma-m": "prisma migrate dev --name init",
+    "prisma-g": "prisma generate",
+    "preprisma-m": "npm run prisma-f && npm run prisma-g",
+    "gen": "graphql-codegen"
   },
   "dependencies": {
     "@fastify/compress": "^6.1.1",
@@ -32,7 +37,6 @@
     "graphql-ws": "^5.12.1",
     "graphql-yoga": "^3.8.0",
     "isomorphic-unfetch": "^4.0.2",
-    "prisma": "^4.12.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "recoil": "^0.7.7",
@@ -44,6 +48,9 @@
     "vite-plugin-ssr": "^0.4.43"
   },
   "devDependencies": {
+    "@eddeee888/gcg-typescript-resolver-files": "^0.4.0",
+    "@graphql-codegen/cli": "^3.3.0",
+    "@graphql-codegen/client-preset": "^3.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
@@ -56,6 +63,7 @@
     "eslint-plugin-react": "^7.32.2",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
+    "prisma": "^4.12.0",
     "ts-jest": "^29.1.0",
     "vite-plugin-windicss": "^1.8.10",
     "windicss": "^3.5.6"

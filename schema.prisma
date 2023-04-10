@@ -2,3 +2,59 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  SUPERADMIN
+}
+
+model User {
+  id             String    @id @default(uuid())
+  role           Role      @default(USER)
+  nickName       String
+  active         Boolean
+  email          String
+  password       String
+  posts          Post[]
+  comments       Comment[]
+  sendMessages   Message[] @relation("sender")
+  recvieMessages Message[] @relation("reciver")
+  createAt       DateTime
+  updateAt       DateTime
+}
+
+model Message {
+  id     String @id @default(uuid())
+  from   User   @relation("sender", references: [id], fields: [fromId])
+  fromId String
+  to     User   @relation("reciver", references: [id], fields: [toId])
+  toId   String
+  body   String//信息内容
+  read Boolean//已读？
+  createAt DateTime @default(now())
+}
+
+model Post {
+  id       String    @id @default(uuid())
+  author   User      @relation(fields: [userId], references: [id])
+  userId   String
+  content  String
+  comments Comment[]
+  createAt DateTime
+  updateAt DateTime
+}
+
+model Comment {
+  id       String   @id @default(uuid())
+  author   User     @relation(fields: [userId], references: [id])
+  userId   String
+  post     Post     @relation(fields: [postId], references: [id])
+  postId   String
+  createAt DateTime
+  updateAt DateTime
+}
