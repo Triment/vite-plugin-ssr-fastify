@@ -4,20 +4,20 @@ import { schema } from '../Schema'
 
 
 const permissions = shield({
-    Query: {
-        '*': allow
-    },
-    Mutation: {
-        '*': allow
-    },
-    Subscription: {
-        '*': allow
-    }
+  Query: {
+    '*': allow
+  },
+  Mutation: {
+    '*': allow
+  },
+  Subscription: {
+    '*': allow
+  }
 },
-    {
-        fallbackRule: allow,
-        allowExternalErrors: true,
-    }
+{
+  fallbackRule: allow,
+  allowExternalErrors: true,
+}
 )
 
 export const AuthenticationSchema = applyMiddleware(schema, permissions)

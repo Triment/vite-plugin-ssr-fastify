@@ -9,7 +9,7 @@ import { Client, getInitialState } from 'graphql-hooks-ssr'
 const logoUrl = ''
 export { render }
 // See https://vite-plugin-ssr.com/data-fetching
-export const passToClient = ['pageProps', 'urlPathname', 'userState', 'initialState']
+export const passToClient = ['pageProps', 'userState', 'initialState']
 
 async function render(pageContext: PageContextServer) {
   const { Page, pageProps, userState, client } = pageContext
@@ -38,7 +38,6 @@ async function render(pageContext: PageContextServer) {
         <title>${title}</title>
       </head>
       <body>
-        // eslint-disable-next-line no-extra-boolean-cast
         <div id="page-view">${pageHtml}</div>
         <script type="text/javascript">
             window.__INITIAL_STATE__=${JSON.stringify(initialState).replace(
