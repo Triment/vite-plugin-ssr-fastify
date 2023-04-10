@@ -1,10 +1,16 @@
+import { globalConfig } from '#root/global.config'
+import { QlClient } from '#root/helpers/client/index'
 import compress from '@fastify/compress'
 import middie from '@fastify/middie'
 import fastifyStatic from '@fastify/static'
+import fastifyWebsocket from '@fastify/websocket'
 import fastify from 'fastify'
+import { makeHandler } from 'graphql-ws/lib/use/@fastify/websocket'
 import path from 'path'
 import vite from 'vite'
 import { renderPage } from 'vite-plugin-ssr'
+import { schema } from './yoga'
+
 const isProduction = process.env.NODE_ENV === 'production'
 const root = `${__dirname}/..`
 
@@ -12,6 +18,12 @@ startServer()
 
 async function startServer() {
   const app = fastify()
+
+  app.register(fastifyWebsocket)
+
+  app.register(async (fastify) => {
+    fastify.get(globalConfig.GRAPHQL_PATH, { websocket: true }, makeHandler({ schema }))
+  })
 
   await app.register(middie)
   await app.register(compress)
@@ -31,13 +43,15 @@ async function startServer() {
   }
 
   app.get('*', async (req, reply) => {
-
+    //graphql client
+    const client = QlClient({})
     const userState = {
       id: 1
     }
     const pageContextInit = {
       urlOriginal: req.url,
-      userState
+      userState,
+      client
     }
     const pageContext = await renderPage(pageContextInit)
     const { httpResponse } = pageContext

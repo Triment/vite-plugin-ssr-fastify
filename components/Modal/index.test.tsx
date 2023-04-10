@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
-import { render, renderHook, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, renderHook, waitFor } from '@testing-library/react'
+//import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { useModal } from '.'
 
