@@ -11,6 +11,7 @@ export const meta = {
 }
 
 function Page() {
+  window.__vite_plugin_ssr__pageFiles
   const [state, ] = useRecoilState(user)
   return (
     <>

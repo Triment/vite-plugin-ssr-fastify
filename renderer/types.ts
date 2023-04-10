@@ -3,7 +3,7 @@ export type { PageContextClient }
 export type { PageContext }
 export type { PageProps }
 
-import { GraphQLClient } from 'graphql-hooks'
+import { Client } from 'urql'
 import type { PageContextBuiltIn } from 'vite-plugin-ssr'
 // import type { PageContextBuiltInClient } from 'vite-plugin-ssr/client/router' // When using Client Routing
 import type { PageContextBuiltInClient } from 'vite-plugin-ssr/client' // When using Server Routing
@@ -22,7 +22,7 @@ export type PageContextCustom = {
     }
   },
   userState: {[key:string]:unknown},
-  client: GraphQLClient
+  client: Client
 }
 
 type PageContextServer = PageContextBuiltIn<Page> & PageContextCustom 

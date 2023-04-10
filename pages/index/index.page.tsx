@@ -1,23 +1,24 @@
 
 import { user } from '#root/renderer/recoil/atoms/user'
-import { useMutation, useQuery } from 'graphql-hooks'
+import { gql, useQuery } from 'urql'
 import React from 'react'
 import { useRecoilState } from 'recoil'
 export { Page }
 
 function Page() {
   const [state, setUserState] = useRecoilState(user)
-  const { data, loading } = useQuery(`query MyQuery($id: ID = "1") {
+  const [result, reQuery] = useQuery({
+    query: gql`query MyQuery($id: ID = "1") {
     room(id: $id) {
       body
       from
     }
-  }`)
-  if (loading && !data)
+  }`})
+  if (result.fetching)
     return <div suppressHydrationWarning> 加载中 </div>
   return (
     <div suppressHydrationWarning>
-      <h1>{data.room.length}</h1>
+      <h1>{result.data.room.length}</h1>
       This page is:
       <ul>
         <li role='author'>{state.username}</li>

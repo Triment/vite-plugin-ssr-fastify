@@ -6,6 +6,7 @@ import fastifyWebsocket from '@fastify/websocket'
 import fastify from 'fastify'
 import path from 'path'
 import vite from 'vite'
+import { ssrExchange } from 'urql'
 import { renderPage } from 'vite-plugin-ssr'
 import { bindFastify } from './Yoga/bindFastify'
 
@@ -38,7 +39,8 @@ async function startServer() {
 
   app.get('*', async (req, reply) => {
     //graphql client
-    const client = QlClient({ headers: { 'x-c': '8989' } })
+    const ssrExc = ssrExchange({ isClient: false })
+    const client = QlClient({ ssrExc })
     const userState = {
       id: 1
     }

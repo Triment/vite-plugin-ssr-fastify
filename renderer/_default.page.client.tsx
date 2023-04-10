@@ -1,28 +1,34 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { QlClient } from '#root/helpers/client/index'
-import { ClientContext } from 'graphql-hooks'
 import React from 'react'
 import { Root, createRoot, hydrateRoot } from 'react-dom/client'
 import { RecoilRoot } from 'recoil'
+import { Provider, ssrExchange } from 'urql'
 import 'virtual:windi.css'
 import { PageShell } from './PageShell'
 import type { PageContextClient } from './types'
+
 
 export { render }
 export const clientRouting = true//enable SPA
 
 let root: Root
-async function render(pageContext: PageContextClient & { initialState: object }) {
-  const { Page, pageProps, initialState } = pageContext
+async function render(pageContext: PageContextClient & { data: object }) {
+  const { Page, pageProps } = pageContext
+  const isServerSide = typeof window === 'undefined'
+  const ssrExc = ssrExchange({ 
+    isClient: !isServerSide, 
+    initialState:!isServerSide ? window.__URQL_DATA__ : undefined
+  })
+  const client = QlClient({ ssrExc })
 
-  const client = QlClient({ initialState })
-  const page = <ClientContext.Provider value={client}>
+  const page = <Provider value={client}>
     <PageShell pageContext={pageContext}>
       <RecoilRoot>
         <Page {...pageProps} />
       </RecoilRoot>
     </PageShell>
-  </ClientContext.Provider>
+  </Provider>
 
   const container = document.getElementById('page-view')
   // SPA
