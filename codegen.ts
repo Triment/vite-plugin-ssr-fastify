@@ -10,6 +10,7 @@ const config: CodegenConfig = {
     './helpers/gql/': {
       preset: 'client'
     }
-  }
+  },
+  watch: true
 }
 export default config
