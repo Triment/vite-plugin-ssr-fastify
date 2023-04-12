@@ -3,10 +3,10 @@ import { pubSub, schema } from './Schema'
 
 export const YogaApp = createYoga({
   graphiql: {
-    subscriptionsProtocol: 'WS'
+    subscriptionsProtocol: 'WS',
   },
   schema: schema,
   context: {
     pubSub,
-  }
+  },
 })

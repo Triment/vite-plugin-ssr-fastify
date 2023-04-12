@@ -7,3 +7,7 @@ type User {
 type Mutation {
   genUser(id: ID): User
 }
+
+type Query {
+  getUser(id:ID):User
+}

@@ -13,23 +13,20 @@ export { render }
 export const passToClient = ['pageProps', 'userState', 'initialState', 'headers', 'data']
 
 async function render(pageContext: PageContextServer) {
-  const { 
-    Page, 
-    pageProps, 
-    initialState, 
-    userState, 
-    headers } = pageContext
+  const { Page, pageProps, initialState, userState, headers } = pageContext
 
   const ssrExc = ssrExchange({ isClient: false, initialState })
   const urqlClient = QlClient({ ssrExc, headers })
 
-  const App = <Provider value={urqlClient}>
-    <PageShell pageContext={pageContext}>
-      <RecoilRoot >
-        <Page {...pageProps} />
-      </RecoilRoot>
-    </PageShell>
-  </Provider>
+  const App = (
+    <Provider value={urqlClient}>
+      <PageShell pageContext={pageContext}>
+        <RecoilRoot>
+          <Page {...pageProps} />
+        </RecoilRoot>
+      </PageShell>
+    </Provider>
+  )
   await prepass(App)
 
   const data = ssrExc.extractData()
@@ -58,11 +55,12 @@ async function render(pageContext: PageContextServer) {
 
   return {
     documentHtml,
-    pageContext: {//此处的context会在每个页面的server端获取
+    pageContext: {
+      //此处的context会在每个页面的server端获取
       userState,
       data,
-      headers
+      headers,
       // We can add some `pageContext` here, which is useful if we want to do page redirection https://vite-plugin-ssr.com/page-redirection
-    }
+    },
   }
 }

@@ -1,4 +1,3 @@
-
 import { FastifyInstance } from 'fastify'
 import { Socket } from 'net'
 import { YogaApp } from './App'
@@ -12,22 +11,20 @@ export function bindFastify(app: FastifyInstance) {
       // Second parameter adds Fastify's `req` and `reply` to the GraphQL Context
       const response = await YogaApp.handleNodeRequest(req, {
         req,
-        reply
+        reply,
       })
       response.headers.forEach((value, key) => {
         reply.header(key, value)
       })
-
       reply.status(response.status)
-
       reply.send(response.body)
 
       return reply
-    }
+    },
   })
   const wsServer = new WebSocketServer({
     server: app.server,
-    path: YogaApp.graphqlEndpoint
+    path: YogaApp.graphqlEndpoint,
   })
 
   useServer(

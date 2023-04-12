@@ -8,31 +8,32 @@ import 'virtual:windi.css'
 import { PageShell } from './PageShell'
 import type { PageContextClient } from './types'
 
-
 export { render }
-export const clientRouting = true//enable SPA
+export const clientRouting = true //enable SPA
 
 let root: Root
 async function render(pageContext: PageContextClient & { data: SSRData }) {
   const { Page, pageProps, headers } = pageContext
   console.log(headers, 'headers')
   const isServerSide = typeof window === 'undefined'
-  const ssrExc = ssrExchange({ 
-    isClient: !isServerSide, 
-    initialState:!isServerSide ? window.__URQL_DATA__ : pageContext.data
+  const ssrExc = ssrExchange({
+    isClient: !isServerSide,
+    initialState: !isServerSide ? window.__URQL_DATA__ : pageContext.data,
   })
   const client = QlClient({ ssrExc })
-  const page = <Provider value={client}>
-    <PageShell pageContext={pageContext}>
-      <RecoilRoot>
-        <Page {...pageProps} />
-      </RecoilRoot>
-    </PageShell>
-  </Provider>
+  const page = (
+    <Provider value={client}>
+      <PageShell pageContext={pageContext}>
+        <RecoilRoot>
+          <Page {...pageProps} />
+        </RecoilRoot>
+      </PageShell>
+    </Provider>
+  )
 
   const container = document.getElementById('page-view')
   // SPA
-  if (container && container.innerHTML === '' || !pageContext.isHydration) {
+  if ((container && container.innerHTML === '') || !pageContext.isHydration) {
     if (!root) {
       root = createRoot(container!)
     }

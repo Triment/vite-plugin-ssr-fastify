@@ -5,20 +5,19 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
-import { Page } from './index.page'
+import { Page } from './index.page.tssx'
 /**
  * @jest-environment jsdom
  */
 test('测试recoil状态变化', async () => {
   const onChange = jest.fn()
   // ARRANGE
-  render(<RecoilRoot>
-    <RecoilObserver
-      node={user}
-      onChange={onChange}
-    />
-    <Page />
-  </RecoilRoot>)
+  render(
+    <RecoilRoot>
+      <RecoilObserver node={user} onChange={onChange} />
+      <Page />
+    </RecoilRoot>,
+  )
   // ACT
   await userEvent.click(screen.getByRole('changeuser'))
   //await screen.findByRole('hello')

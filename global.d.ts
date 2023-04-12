@@ -18,9 +18,9 @@ import { SSRData } from 'urql'
 // declare const window: Window
 export {}
 declare global {
-    interface Window {
-        __URQL_DATA__: SSRData
-    }
+  interface Window {
+    __URQL_DATA__: SSRData
+  }
 }
 // declare const Window: {
 //     new (): Window;

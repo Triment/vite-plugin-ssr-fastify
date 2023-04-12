@@ -1,32 +1,33 @@
-import { Client, cacheExchange, fetchExchange, subscriptionExchange, ssrExchange, SSRExchange } from 'urql'
+import {
+  Client,
+  cacheExchange,
+  fetchExchange,
+  subscriptionExchange,
+  ssrExchange,
+  SSRExchange,
+} from 'urql'
 import { createClient as createWSClient } from 'graphql-ws'
 import { globalConfig } from '#root/global.config'
 import WebSocket from 'ws'
 
 const wsClient = createWSClient({
   url: globalConfig.GRAPHQL_WS_PATH,
-  webSocketImpl: WebSocket.WebSocket
+  webSocketImpl: WebSocket.WebSocket,
 })
 
 /**
- * 
+ *
  * @param param0 { headers: Headers fetch头信息, ssrExc?: SSRExchange 服务端渲染数据交换器 }
- * @returns 
+ * @returns
  */
-export const QlClient = (
-  { 
-    headers,
-    ssrExc
-  }: 
-  {  
-    headers?: Headers,
-    ssrExc?: SSRExchange
-  }) => {
+export const QlClient = ({ headers, ssrExc }: { headers?: Headers; ssrExc?: SSRExchange }) => {
   const isServerSide = typeof window === 'undefined'
-  const ssr = ssrExc || ssrExchange({
-    isClient: !isServerSide,
-    initialState: !isServerSide ? window.__URQL_DATA__ : undefined,
-  })
+  const ssr =
+    ssrExc ||
+    ssrExchange({
+      isClient: !isServerSide,
+      initialState: !isServerSide ? window.__URQL_DATA__ : undefined,
+    })
   return new Client({
     url: globalConfig.GRAPHQL_PATH,
     suspense: !isServerSide,
@@ -48,8 +49,8 @@ export const QlClient = (
     ],
     fetchOptions: () => {
       return {
-        headers: headers
+        headers: headers,
       }
-    }
+    },
   })
 }
