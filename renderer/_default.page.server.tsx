@@ -1,24 +1,29 @@
-import ReactDOMServer from 'react-dom/server'
-import React from 'react'
-import { PageShell } from './PageShell'
-import { escapeInject } from 'vite-plugin-ssr'
-import { RecoilRoot } from 'recoil'
-import type { PageContextServer } from './types'
-import { Provider, ssrExchange } from 'urql'
-import prepass from 'react-ssr-prepass'
 import { QlClient } from '#root/helpers/client'
+import React from 'react'
+import ReactDOMServer from 'react-dom/server'
+import prepass from 'react-ssr-prepass'
+import { RecoilRoot } from 'recoil'
+import { Provider, ssrExchange } from 'urql'
+import { escapeInject } from 'vite-plugin-ssr'
+import { PageShell } from './PageShell'
+import type { PageContextServer } from './types'
 const logoUrl = ''
 export { render }
 // See https://vite-plugin-ssr.com/data-fetching
-export const passToClient = ['pageProps', 'userState', 'initialState']
+export const passToClient = ['pageProps', 'userState', 'initialState', 'headers', 'data']
 
 async function render(pageContext: PageContextServer) {
-  const { Page, pageProps, userState } = pageContext
+  const { 
+    Page, 
+    pageProps, 
+    initialState, 
+    userState, 
+    headers } = pageContext
 
-  const ssrExc = ssrExchange({ isClient: false })
-  const client = QlClient({ ssrExc })
+  const ssrExc = ssrExchange({ isClient: false, initialState })
+  const urqlClient = QlClient({ ssrExc, headers })
 
-  const App = <Provider value={client}>
+  const App = <Provider value={urqlClient}>
     <PageShell pageContext={pageContext}>
       <RecoilRoot >
         <Page {...pageProps} />
@@ -27,8 +32,7 @@ async function render(pageContext: PageContextServer) {
   </Provider>
   await prepass(App)
 
-  const data = JSON.stringify(ssrExc.extractData())
-  console.log(data)
+  const data = ssrExc.extractData()
   const pageHtml = Page !== undefined ? ReactDOMServer.renderToStaticNodeStream(App) : ''
   // See https://vite-plugin-ssr.com/head
   const { documentProps } = pageContext.exports
@@ -47,16 +51,17 @@ async function render(pageContext: PageContextServer) {
       <body>
         <div id="page-view">${pageHtml}</div>
         <script type="text/javascript">
-          window.__URQL_DATA__ = ${data}
+          window.__URQL_DATA__ = ${JSON.stringify(data)}
         </script>
       </body>
     </html>`
 
   return {
     documentHtml,
-    pageContext: {
+    pageContext: {//此处的context会在每个页面的server端获取
       userState,
-      data
+      data,
+      headers
       // We can add some `pageContext` here, which is useful if we want to do page redirection https://vite-plugin-ssr.com/page-redirection
     }
   }

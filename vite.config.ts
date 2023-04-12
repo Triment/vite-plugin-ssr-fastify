@@ -11,6 +11,11 @@ const config: UserConfig = {
       'unfetch': path.resolve(__dirname, 'node_modules/unfetch/dist/unfetch.mjs')// unfetch bug see: https://github.com/developit/unfetch/pull/164
     }
   },
+  server:{
+    hmr: {
+      port: 6372
+    }
+  },
   plugins: [react(), ssr(), WindiCSS({
     scan: {
       // 默认情况下只有 `src/` 目录下被扫描

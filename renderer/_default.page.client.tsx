@@ -3,7 +3,7 @@ import { QlClient } from '#root/helpers/client/index'
 import React from 'react'
 import { Root, createRoot, hydrateRoot } from 'react-dom/client'
 import { RecoilRoot } from 'recoil'
-import { Provider, ssrExchange } from 'urql'
+import { Provider, SSRData, ssrExchange } from 'urql'
 import 'virtual:windi.css'
 import { PageShell } from './PageShell'
 import type { PageContextClient } from './types'
@@ -13,15 +13,15 @@ export { render }
 export const clientRouting = true//enable SPA
 
 let root: Root
-async function render(pageContext: PageContextClient & { data: object }) {
-  const { Page, pageProps } = pageContext
+async function render(pageContext: PageContextClient & { data: SSRData }) {
+  const { Page, pageProps, headers } = pageContext
+  console.log(headers, 'headers')
   const isServerSide = typeof window === 'undefined'
   const ssrExc = ssrExchange({ 
     isClient: !isServerSide, 
-    initialState:!isServerSide ? window.__URQL_DATA__ : undefined
+    initialState:!isServerSide ? window.__URQL_DATA__ : pageContext.data
   })
   const client = QlClient({ ssrExc })
-
   const page = <Provider value={client}>
     <PageShell pageContext={pageContext}>
       <RecoilRoot>

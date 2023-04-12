@@ -24,6 +24,8 @@ model User {
   comments       Comment[]
   sendMessages   Message[] @relation("sender")
   recvieMessages Message[] @relation("reciver")
+  // 字段翻译
+  zh_CN String
   createAt       DateTime
   updateAt       DateTime
 }
@@ -36,6 +38,7 @@ model Message {
   toId   String
   body   String//信息内容
   read Boolean//已读？
+  zh_CN String//字段翻译
   createAt DateTime @default(now())
 }
 
@@ -45,6 +48,7 @@ model Post {
   userId   String
   content  String
   comments Comment[]
+  zh_CN String//字段翻译
   createAt DateTime
   updateAt DateTime
 }
@@ -55,6 +59,7 @@ model Comment {
   userId   String
   post     Post     @relation(fields: [postId], references: [id])
   postId   String
+  zh_CN String//字段翻译
   createAt DateTime
   updateAt DateTime
 }

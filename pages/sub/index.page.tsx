@@ -26,12 +26,7 @@ export function Page() {
   const [roomId, setRoomId] = useState('')
   const [messages, setMsg] = useState<{ body: string, from: string }[]>([])
   const [payload, setPayload] = useState({ body: '', from: '' })
-  const [res] = useSubscription({ query: gql`subscription MySubscription($roomId: ID = "1") {
-    newMessage(roomId: $roomId) {
-      body
-      from
-    }
-  }`, variables: { roomId: '1' } }, (msg, response) => {
+  const [res] = useSubscription({ query: sub, variables: { roomId: '1' } }, (msg, response) => {
     return response.newMessage
   })
 

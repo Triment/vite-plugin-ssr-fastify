@@ -1,8 +1,9 @@
 
 import { user } from '#root/renderer/recoil/atoms/user'
-import { gql, useQuery } from 'urql'
 import React from 'react'
 import { useRecoilState } from 'recoil'
+import { gql, useQuery } from 'urql'
+import { navigate } from 'vite-plugin-ssr/client/router'
 export { Page }
 
 function Page() {
@@ -22,7 +23,11 @@ function Page() {
       This page is:
       <ul>
         <li role='author'>{state.username}</li>
-        <input type='button' role='changeuser' value="test" onClick={() => setUserState({ username: 'newuser' })} />
+        <input type='button' role='changeuser' value="test" onClick={() => {
+          setUserState({ username: 'newuser' })
+          navigate('/about')
+        }
+        } />
       </ul>
     </div>
   )

@@ -8,6 +8,11 @@ const wsClient = createWSClient({
   webSocketImpl: WebSocket.WebSocket
 })
 
+/**
+ * 
+ * @param param0 { headers: Headers fetch头信息, ssrExc?: SSRExchange 服务端渲染数据交换器 }
+ * @returns 
+ */
 export const QlClient = (
   { 
     headers,

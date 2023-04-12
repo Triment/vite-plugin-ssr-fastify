@@ -1,12 +1,11 @@
-import { QlClient } from '#root/helpers/client/index'
 import compress from '@fastify/compress'
 import middie from '@fastify/middie'
 import fastifyStatic from '@fastify/static'
 import fastifyWebsocket from '@fastify/websocket'
 import fastify from 'fastify'
 import path from 'path'
+import { SSRData } from 'urql'
 import vite from 'vite'
-import { ssrExchange } from 'urql'
 import { renderPage } from 'vite-plugin-ssr'
 import { bindFastify } from './Yoga/bindFastify'
 
@@ -36,25 +35,31 @@ async function startServer() {
     })
     await app.use(viteServer.middlewares)
   }
-
+  app.use(async (req, reply, next) => {
+    next()
+  })
   app.get('*', async (req, reply) => {
     //graphql client
-    const ssrExc = ssrExchange({ isClient: false })
-    const client = QlClient({ ssrExc })
-    const userState = {
-      id: 1
-    }
+    //用户状态
+    const userState = {}
+    //urql客户端状态
+    const initialState: SSRData = { }
+    const headers = { 'x-h': ' hihi'}
+    const redirectTo = ''//登录的关键地方
     const pageContextInit = {
       urlOriginal: req.url,
       userState,
-      client
+      initialState,
+      headers,
+      redirectTo
     }
     const pageContext = await renderPage(pageContextInit)
     const { httpResponse } = pageContext
-
-    if (!httpResponse) {
+    if(pageContext.redirectTo){
+      reply.redirect(307, pageContext.redirectTo)
+    } else if (!httpResponse) {
       return reply.code(404).type('text/html').send('Not Found')
-    }
+    } else
     httpResponse.pipe(reply.raw)
     return reply
     //const { statusCode, contentType } = httpResponse
