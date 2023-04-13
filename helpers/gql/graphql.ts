@@ -14,94 +14,77 @@ export type Scalars = {
   Float: number
 }
 
-export type Message = {
-  __typename?: 'Message'
-  body?: Maybe<Scalars['String']>
-  from?: Maybe<Scalars['String']>
-}
-
 export type Mutation = {
   __typename?: 'Mutation'
-  genUser?: Maybe<User>
-  getPost?: Maybe<Post>
+  signUp?: Maybe<User>
 }
 
-export type MutationGenUserArgs = {
-  id?: InputMaybe<Scalars['ID']>
-}
-
-export type MutationGetPostArgs = {
-  id?: InputMaybe<Scalars['ID']>
-}
-
-export type Post = {
-  __typename?: 'Post'
-  content?: Maybe<Scalars['String']>
-  id?: Maybe<Scalars['ID']>
-  title?: Maybe<Scalars['String']>
+export type MutationSignUpArgs = {
+  email?: InputMaybe<Scalars['String']>
+  password?: InputMaybe<Scalars['String']>
 }
 
 export type Query = {
   __typename?: 'Query'
-  getUser: Array<User>
+  signIn?: Maybe<SignResponse>
 }
 
-export type QueryGetUserArgs = {
-  id?: InputMaybe<Scalars['ID']>
+export type QuerySignInArgs = {
+  email?: InputMaybe<Scalars['String']>
+  password?: InputMaybe<Scalars['String']>
 }
 
-export type Subscription = {
-  __typename?: 'Subscription'
-  newMessage: Message
-}
-
-export type SubscriptionNewMessageArgs = {
-  roomId: Scalars['ID']
+export type SignResponse = {
+  __typename?: 'SignResponse'
+  token?: Maybe<Scalars['String']>
 }
 
 export type User = {
   __typename?: 'User'
+  avatarUrl?: Maybe<Scalars['String']>
   id?: Maybe<Scalars['ID']>
   name?: Maybe<Scalars['String']>
 }
 
-export type UserQueryVariables = Exact<{ [key: string]: never }>
+export type MyQueryQueryVariables = Exact<{ [key: string]: never }>
 
-export type UserQuery = {
+export type MyQueryQuery = {
   __typename?: 'Query'
-  getUser: Array<{ __typename?: 'User'; id?: string | null; name?: string | null }>
+  signIn?: { __typename?: 'SignResponse'; token?: string | null } | null
 }
 
-export const UserDocument = {
+export const MyQueryDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'User' },
+      name: { kind: 'Name', value: 'MyQuery' },
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'getUser' },
+            name: { kind: 'Name', value: 'signIn' },
             arguments: [
               {
                 kind: 'Argument',
-                name: { kind: 'Name', value: 'id' },
+                name: { kind: 'Name', value: 'email' },
+                value: { kind: 'StringValue', value: '', block: false },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'password' },
                 value: { kind: 'StringValue', value: '', block: false },
               },
             ],
             selectionSet: {
               kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-              ],
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'token' } }],
             },
           },
         ],
       },
     },
   ],
-} as unknown as DocumentNode<UserQuery, UserQueryVariables>
+} as unknown as DocumentNode<MyQueryQuery, MyQueryQueryVariables>

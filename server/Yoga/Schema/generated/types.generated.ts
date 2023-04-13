@@ -1,6 +1,8 @@
 import { GraphQLResolveInfo } from 'graphql'
+import { User as UserModel } from '.prisma/client'
+import { ContextDef } from '../contextType.js'
 export type Maybe<T> = T | null
-export type InputMaybe<T> = Maybe<T>
+export type InputMaybe<T> = undefined | T
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
@@ -14,53 +16,34 @@ export type Scalars = {
   Float: number
 }
 
-export type Message = {
-  __typename: 'Message'
-  body?: Maybe<Scalars['String']>
-  from?: Maybe<Scalars['String']>
-}
-
 export type Mutation = {
   __typename: 'Mutation'
-  genUser?: Maybe<User>
-  getPost?: Maybe<Post>
+  signUp?: Maybe<User>
 }
 
-export type MutationGenUserArgs = {
-  id?: InputMaybe<Scalars['ID']>
-}
-
-export type MutationGetPostArgs = {
-  id?: InputMaybe<Scalars['ID']>
-}
-
-export type Post = {
-  __typename: 'Post'
-  content?: Maybe<Scalars['String']>
-  id?: Maybe<Scalars['ID']>
-  title?: Maybe<Scalars['String']>
+export type MutationSignUpArgs = {
+  email: Scalars['String']
+  password: Scalars['String']
 }
 
 export type Query = {
   __typename: 'Query'
-  getUser: Array<User>
+  signIn?: Maybe<SignResponse>
 }
 
-export type QueryGetUserArgs = {
-  id?: InputMaybe<Scalars['ID']>
+export type QuerySignInArgs = {
+  email?: InputMaybe<Scalars['String']>
+  password?: InputMaybe<Scalars['String']>
 }
 
-export type Subscription = {
-  __typename: 'Subscription'
-  newMessage: Message
-}
-
-export type SubscriptionNewMessageArgs = {
-  roomId: Scalars['ID']
+export type SignResponse = {
+  __typename: 'SignResponse'
+  token?: Maybe<Scalars['String']>
 }
 
 export type User = {
   __typename: 'User'
+  avatarUrl?: Maybe<Scalars['String']>
   id?: Maybe<Scalars['ID']>
   name?: Maybe<Scalars['String']>
 }
@@ -149,106 +132,71 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Message: ResolverTypeWrapper<Message>
-  String: ResolverTypeWrapper<Scalars['String']>
   Mutation: ResolverTypeWrapper<{}>
-  ID: ResolverTypeWrapper<Scalars['ID']>
-  Post: ResolverTypeWrapper<Post>
+  String: ResolverTypeWrapper<Scalars['String']>
   Query: ResolverTypeWrapper<{}>
-  Subscription: ResolverTypeWrapper<{}>
-  User: ResolverTypeWrapper<User>
+  SignResponse: ResolverTypeWrapper<SignResponse>
+  User: ResolverTypeWrapper<UserModel>
+  ID: ResolverTypeWrapper<Scalars['ID']>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
 }
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Message: Message
-  String: Scalars['String']
   Mutation: {}
-  ID: Scalars['ID']
-  Post: Post
+  String: Scalars['String']
   Query: {}
-  Subscription: {}
-  User: User
+  SignResponse: SignResponse
+  User: UserModel
+  ID: Scalars['ID']
   Boolean: Scalars['Boolean']
 }
 
-export type MessageResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message'],
-> = {
-  body?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  from?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
-}
-
 export type MutationResolvers<
-  ContextType = any,
+  ContextType = ContextDef,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
 > = {
-  genUser?: Resolver<
+  signUp?: Resolver<
     Maybe<ResolversTypes['User']>,
     ParentType,
     ContextType,
-    Partial<MutationGenUserArgs>
+    RequireFields<MutationSignUpArgs, 'email' | 'password'>
   >
-  getPost?: Resolver<
-    Maybe<ResolversTypes['Post']>,
-    ParentType,
-    ContextType,
-    Partial<MutationGetPostArgs>
-  >
-}
-
-export type PostResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post'],
-> = {
-  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>
-  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type QueryResolvers<
-  ContextType = any,
+  ContextType = ContextDef,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
-  getUser?: Resolver<
-    Array<ResolversTypes['User']>,
+  signIn?: Resolver<
+    Maybe<ResolversTypes['SignResponse']>,
     ParentType,
     ContextType,
-    Partial<QueryGetUserArgs>
+    Partial<QuerySignInArgs>
   >
 }
 
-export type SubscriptionResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription'],
+export type SignResponseResolvers<
+  ContextType = ContextDef,
+  ParentType extends ResolversParentTypes['SignResponse'] = ResolversParentTypes['SignResponse'],
 > = {
-  newMessage?: SubscriptionResolver<
-    ResolversTypes['Message'],
-    'newMessage',
-    ParentType,
-    ContextType,
-    RequireFields<SubscriptionNewMessageArgs, 'roomId'>
-  >
+  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type UserResolvers<
-  ContextType = any,
+  ContextType = ContextDef,
   ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User'],
 > = {
+  avatarUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
-export type Resolvers<ContextType = any> = {
-  Message?: MessageResolvers<ContextType>
+export type Resolvers<ContextType = ContextDef> = {
   Mutation?: MutationResolvers<ContextType>
-  Post?: PostResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
-  Subscription?: SubscriptionResolvers<ContextType>
+  SignResponse?: SignResponseResolvers<ContextType>
   User?: UserResolvers<ContextType>
 }

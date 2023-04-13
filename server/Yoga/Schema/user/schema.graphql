@@ -1,14 +1,24 @@
-#import Post from "../post/schema.graphql"
+# #import Post from "../post/schema.graphql"
 
 type User {
   id: ID
   name: String
+  avatarUrl: String
+}
+
+
+type SignResponse {
+  token: String
 }
 
 type Mutation {
-  genUser(id: ID): User
+  # 注册
+  signUp(email: String!, password: String!): User
 }
 
+
+
 type Query {
-  getUser(id: ID): [User!]!
+  # 登录返回token
+  signIn(email: String, password: String): SignResponse
 }

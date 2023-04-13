@@ -9,6 +9,17 @@ export const pubSub = createPubSub<{
 export const schema = async () =>
   await loadSchema('./**/schema.graphql', { loaders: [new GraphQLFileLoader()] })
 
+
+
+
+
+
+
+
+
+
+
+
 // export const schema = createSchema({
 //   typeDefs: /* GraphQL */ `
 //     type Query {

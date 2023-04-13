@@ -7,13 +7,14 @@ import { Provider, ssrExchange } from 'urql'
 import { escapeInject } from 'vite-plugin-ssr'
 import { PageShell } from './PageShell'
 import type { PageContextServer } from './types'
+import { user } from './recoil/atoms/user'
 const logoUrl = ''
 export { render }
 // See https://vite-plugin-ssr.com/data-fetching
-export const passToClient = ['pageProps', 'userState', 'initialState', 'headers', 'data']
+export const passToClient = ['pageProps', 'userInfo', 'initialState', 'headers', 'data']
 
 async function render(pageContext: PageContextServer) {
-  const { Page, pageProps, initialState, userState, headers } = pageContext
+  const { Page, pageProps, initialState, userInfo, headers } = pageContext
 
   const ssrExc = ssrExchange({ isClient: false, initialState })
   const urqlClient = QlClient({ ssrExc, headers })
@@ -21,7 +22,9 @@ async function render(pageContext: PageContextServer) {
   const App = (
     <Provider value={urqlClient}>
       <PageShell pageContext={pageContext}>
-        <RecoilRoot>
+        <RecoilRoot initializeState={({ set })=> {
+          set(user, userInfo!)
+        }}>
           <Page {...pageProps} />
         </RecoilRoot>
       </PageShell>
@@ -57,7 +60,7 @@ async function render(pageContext: PageContextServer) {
     documentHtml,
     pageContext: {
       //此处的context会在每个页面的server端获取
-      userState,
+      userInfo,
       data,
       headers,
       // We can add some `pageContext` here, which is useful if we want to do page redirection https://vite-plugin-ssr.com/page-redirection

@@ -7,24 +7,28 @@ import { Provider, SSRData, ssrExchange } from 'urql'
 import 'virtual:windi.css'
 import { PageShell } from './PageShell'
 import type { PageContextClient } from './types'
+import { user } from './recoil/atoms/user'
 
 export { render }
 export const clientRouting = true //enable SPA
 
 let root: Root
 async function render(pageContext: PageContextClient & { data: SSRData }) {
-  const { Page, pageProps, headers } = pageContext
+  const { Page, pageProps, headers, userInfo } = pageContext
 
   const isServerSide = typeof window === 'undefined'
   const ssrExc = ssrExchange({
     isClient: !isServerSide,
     initialState: !isServerSide ? window.__URQL_DATA__ : pageContext.data,
   })
+  //const tokenValue = isServerSide ? headers.token : window.localStorage.getItem('token')
   const client = QlClient({ ssrExc, headers }) //客户端headers ssr交换注入
   const page = (
     <Provider value={client}>
       <PageShell pageContext={pageContext}>
-        <RecoilRoot>
+        <RecoilRoot initializeState={({ set })=> {
+          set(user, userInfo!)
+        }}>
           <Page {...pageProps} />
         </RecoilRoot>
       </PageShell>

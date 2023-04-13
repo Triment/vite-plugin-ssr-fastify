@@ -3,7 +3,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -16,29 +15,27 @@ enum Role {
 model User {
   id             String    @id @default(uuid())
   role           Role      @default(USER)
-  nickName       String
-  active         Boolean
+  nickName       String?
+  active         Boolean   @default(false)
   email          String
-  password       String
+  password       String?
+  avatarUrl      String?
   posts          Post[]
   comments       Comment[]
   sendMessages   Message[] @relation("sender")
   recvieMessages Message[] @relation("reciver")
-  // 字段翻译
-  zh_CN String
-  createAt       DateTime
-  updateAt       DateTime
+  createAt       DateTime  @default(now())
+  updateAt       DateTime  @default(now())
 }
 
 model Message {
-  id     String @id @default(uuid())
-  from   User   @relation("sender", references: [id], fields: [fromId])
-  fromId String
-  to     User   @relation("reciver", references: [id], fields: [toId])
-  toId   String
-  body   String//信息内容
-  read Boolean//已读？
-  zh_CN String//字段翻译
+  id       String   @id @default(uuid())
+  from     User     @relation("sender", references: [id], fields: [fromId])
+  fromId   String
+  to       User     @relation("reciver", references: [id], fields: [toId])
+  toId     String
+  body     String //信息内容
+  read     Boolean //已读？
   createAt DateTime @default(now())
 }
 
@@ -48,9 +45,8 @@ model Post {
   userId   String
   content  String
   comments Comment[]
-  zh_CN String//字段翻译
-  createAt DateTime
-  updateAt DateTime
+  createAt DateTime  @default(now())
+  updateAt DateTime  @default(now())
 }
 
 model Comment {
@@ -59,7 +55,6 @@ model Comment {
   userId   String
   post     Post     @relation(fields: [postId], references: [id])
   postId   String
-  zh_CN String//字段翻译
-  createAt DateTime
-  updateAt DateTime
+  createAt DateTime @default(now())
+  updateAt DateTime @default(now())
 }

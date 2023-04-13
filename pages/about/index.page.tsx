@@ -1,7 +1,7 @@
+import { token } from '#root/renderer/recoil/atoms/token'
 import React from 'react'
-import './code.css'
-import { user } from '#root/renderer/recoil/atoms/user'
 import { useRecoilState } from 'recoil'
+import './code.css'
 
 export { Page }
 
@@ -11,11 +11,10 @@ export const meta = {
 }
 
 function Page() {
-  window.__vite_plugin_ssr__pageFiles
-  const [state] = useRecoilState(user)
+  const [state] = useRecoilState(token)
   return (
     <>
-      <h1>{state.username}</h1>
+      <h1>{state}</h1>
       <p>
         Demo using <code>vite-plugin-ssr</code>.
       </p>
