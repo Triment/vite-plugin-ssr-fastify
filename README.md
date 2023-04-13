@@ -27,4 +27,10 @@ graphql 的模型:
     开一个graphql codegen
     npm run gen
     再开npm run dev
-    
+
+
+
+    task
+     添加prisma-》graphql mappers
+     添加graphql-eslint
+     添加useFragment
