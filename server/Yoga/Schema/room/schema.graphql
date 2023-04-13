@@ -1,8 +1,8 @@
-  type Subscription {
-    newMessage(roomId: ID!): Message!
-  }
+type Subscription {
+  newMessage(roomId: ID!): Message!
+}
 
-  type Message {
-    from: String
-    body: String
-  }
+type Message {
+  from: String
+  body: String
+}

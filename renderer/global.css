@@ -1,5 +1,4 @@
-
 /* 切换动画 贝塞尔函数 */
 .switch {
-    @apply ease-out duration-300
+  @apply ease-out duration-300;
 }

@@ -6,7 +6,7 @@ services:
       POSTGRES_PASSWORD: admin@cd123
       POSTGRES_USER: admin
       POSTGRES_DB: blog
-      PGDATA: "./postgres/data"
+      PGDATA: './postgres/data'
     ports:
       - 5432:5432
   web:

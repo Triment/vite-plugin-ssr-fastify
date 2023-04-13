@@ -11,6 +11,7 @@ const config: CodegenConfig = {
       preset: 'client',
     },
   },
+  hooks: { afterAllFileWrite: ['prettier --write'] },
   watch: true,
 }
 export default config

@@ -5,7 +5,7 @@ export const YogaApp = createYoga({
   graphiql: {
     subscriptionsProtocol: 'WS',
   },
-  schema: schema,
+  schema: schema(),
   context: {
     pubSub,
   },

@@ -1,2 +1,4 @@
 node_modules/
 dist/
+server/Yoga/Schema/generated/
+helpers/gql/

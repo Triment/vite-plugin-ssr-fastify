@@ -1,51 +1,57 @@
-import { PubSub, createPubSub, createSchema } from 'graphql-yoga'
+import { createPubSub } from 'graphql-yoga'
+
+import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
+import { loadSchema } from '@graphql-tools/load'
 export const pubSub = createPubSub<{
   newMessage: [payload: { from: string; body: string }]
 }>()
 
-export const schema = createSchema({
-  typeDefs: /* GraphQL */ `
-    type Query {
-      room(id: ID!): [Message!]!
-    }
+export const schema = async () =>
+  await loadSchema('./**/schema.graphql', { loaders: [new GraphQLFileLoader()] })
 
-    type Mutation {
-      send(input: SendMessageInput!): Message!
-    }
+// export const schema = createSchema({
+//   typeDefs: /* GraphQL */ `
+//     type Query {
+//       room(id: ID!): [Message!]!
+//     }
 
-    type Subscription {
-      newMessage(roomId: ID!): Message!
-    }
+//     type Mutation {
+//       send(input: SendMessageInput!): Message!
+//     }
 
-    type Message {
-      from: String
-      body: String
-    }
+//     type Subscription {
+//       newMessage(roomId: ID!): Message!
+//     }
 
-    input SendMessageInput {
-      roomId: ID!
-      from: String!
-      body: String!
-    }
-  `,
-  resolvers: {
-    Query: {
-      room: () => [],
-    },
-    Mutation: {
-      send: (_, { input }, { pubSub }: { pubSub: PubSub<any> }) => {
-        const { roomId, ...newMessage } = input
+//     type Message {
+//       from: String
+//       body: String
+//     }
 
-        pubSub.publish('newMessage', roomId, newMessage)
+//     input SendMessageInput {
+//       roomId: ID!
+//       from: String!
+//       body: String!
+//     }
+//   `,
+//   resolvers: {
+//     Query: {
+//       room: () => [],
+//     },
+//     Mutation: {
+//       send: (_, { input }, { pubSub }: { pubSub: PubSub<any> }) => {
+//         const { roomId, ...newMessage } = input
 
-        return newMessage
-      },
-    },
-    Subscription: {
-      newMessage: {
-        subscribe: (_, { roomId }, { pubSub }) => pubSub.subscribe('newMessage', roomId),
-        resolve: (payload) => payload,
-      },
-    },
-  },
-})
+//         pubSub.publish('newMessage', roomId, newMessage)
+
+//         return newMessage
+//       },
+//     },
+//     Subscription: {
+//       newMessage: {
+//         subscribe: (_, { roomId }, { pubSub }) => pubSub.subscribe('newMessage', roomId),
+//         resolve: (payload) => payload,
+//       },
+//     },
+//   },
+// })
