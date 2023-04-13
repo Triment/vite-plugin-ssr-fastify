@@ -43,7 +43,7 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query'
-  getUser?: Maybe<Array<Maybe<User>>>
+  getUser: Array<User>
 }
 
 export type QueryGetUserArgs = {
@@ -69,7 +69,7 @@ export type UserQueryVariables = Exact<{ [key: string]: never }>
 
 export type UserQuery = {
   __typename?: 'Query'
-  getUser?: Array<{ __typename?: 'User'; id?: string | null; name?: string | null } | null> | null
+  getUser: Array<{ __typename?: 'User'; id?: string | null; name?: string | null }>
 }
 
 export const UserDocument = {

@@ -3,7 +3,8 @@
     "#root/*": "./*.ts"
   },
   "scripts": {
-    "dev": "concurrently \"npm run gen\" \"npm run watch-format\" \"nodemon\"",
+    "predev": "npm run format",
+    "dev": "nodemon",
     "watch-format": "onchange \"*/**/*.{ts,tsx}\" --exclude-path .gitignore -- prettier --ignore-path .gitignore '*/**/*.{ts,tsx}' --write",
     "watch-eslint-fix": "onchange \"*/**/*.{ts,tsx}\" -- eslint . --ext .tsx,.ts --fix",
     "format": "prettier '*/**/*.{ts,tsx}' --write",

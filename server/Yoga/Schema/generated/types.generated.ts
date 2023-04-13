@@ -43,7 +43,7 @@ export type Post = {
 
 export type Query = {
   __typename: 'Query'
-  getUser?: Maybe<Array<Maybe<User>>>
+  getUser: Array<User>
 }
 
 export type QueryGetUserArgs = {
@@ -215,7 +215,7 @@ export type QueryResolvers<
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
   getUser?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes['User']>>>,
+    Array<ResolversTypes['User']>,
     ParentType,
     ContextType,
     Partial<QueryGetUserArgs>

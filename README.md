@@ -20,3 +20,11 @@ graphql 的模型:
 ## 约定
 
     model/[model]-[action]gql查询(查询备注)
+
+
+
+
+    开一个graphql codegen
+    npm run gen
+    再开npm run dev
+    

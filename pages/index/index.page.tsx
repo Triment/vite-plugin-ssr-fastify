@@ -21,10 +21,12 @@ function Page() {
   if (result.fetching) return <div suppressHydrationWarning> 加载中 </div>
   return (
     <div suppressHydrationWarning>
-      <h1>{result.data?.getUser}</h1>
+      <h1>{result.data?.getUser[0].name}</h1>
       This page is:
       <ul>
-        <li role="author" onClick={(e) => {}}>
+        <li role="author" onClick={(e) => {
+          console.log(e)
+        }}>
           {state.username}
         </li>
         <input
