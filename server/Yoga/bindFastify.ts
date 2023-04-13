@@ -1,14 +1,15 @@
 import { FastifyInstance } from 'fastify'
-import { Socket } from 'net'
-import { YogaApp } from './App'
 import { useServer } from 'graphql-ws/lib/use/ws'
+import { Socket } from 'net'
 import { WebSocketServer } from 'ws'
+import { YogaApp } from './App'
 export function bindFastify(app: FastifyInstance) {
   app.route({
     url: '/graphql',
     method: ['GET', 'POST', 'OPTIONS'],
     handler: async (req, reply) => {
       // Second parameter adds Fastify's `req` and `reply` to the GraphQL Context
+      console.log(req.headers.authorization, ' test on graphql')
       const response = await YogaApp.handleNodeRequest(req, {
         req,
         reply,

@@ -14,13 +14,13 @@ export const clientRouting = true //enable SPA
 let root: Root
 async function render(pageContext: PageContextClient & { data: SSRData }) {
   const { Page, pageProps, headers } = pageContext
-  console.log(headers, 'headers')
+
   const isServerSide = typeof window === 'undefined'
   const ssrExc = ssrExchange({
     isClient: !isServerSide,
     initialState: !isServerSide ? window.__URQL_DATA__ : pageContext.data,
   })
-  const client = QlClient({ ssrExc })
+  const client = QlClient({ ssrExc, headers }) //客户端headers ssr交换注入
   const page = (
     <Provider value={client}>
       <PageShell pageContext={pageContext}>

@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
-import { Page } from './index.page.tssx'
+import { Page } from './index.page.tsx'
 /**
  * @jest-environment jsdom
  */

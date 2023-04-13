@@ -39,12 +39,14 @@ async function startServer() {
     next()
   })
   app.get('*', async (req, reply) => {
+    //if
+    //console.log(req.headers.authorization)
     //graphql client
     //用户状态
     const userState = {}
     //urql客户端状态
     const initialState: SSRData = {}
-    const headers = { 'x-h': ' hihi' }
+    const headers = { authorization: 'token' }
     const redirectTo = '' //登录的关键地方
     const pageContextInit = {
       urlOriginal: req.url,
